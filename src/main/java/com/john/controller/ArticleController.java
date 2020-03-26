@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @Controller
+@RequestMapping("articles")
 public class ArticleController {
 
     private Logger logger = LoggerFactory.getLogger("springboot");
@@ -26,7 +28,7 @@ public class ArticleController {
 
     //添加頁面
     @ApiOperation(value="添加頁面")
-    @RequestMapping ( "/add" )
+    @GetMapping("new")
     @ResponseStatus(HttpStatus.OK)
     public String add() {
         return "add";
@@ -34,10 +36,7 @@ public class ArticleController {
 
     //文章列表
     @ApiOperation(value="文章列表")
-    @RequestMapping(value = {
-            "/",
-            "/listArticle"
-    })
+    @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     public String listArticle(@RequestParam ( value = "title", defaultValue = "" ) String title,
                               Model model, @RequestParam ( value = "start", defaultValue = "1" ) int start,
@@ -66,12 +65,11 @@ public class ArticleController {
         return "modify";
     }
 
-    //列出--查詢
-    @ApiOperation(value="列出--查詢")
-    @RequestMapping ( "/getArticle" )
+    @ApiOperation(value="獲取文章列表", notes="獲取文章列表")
+    @GetMapping( "{id}" )
     @ResponseStatus(HttpStatus.OK)
-    public String getArticle(Article article, BindingResult bindingResult, Model model) throws Exception {
-        model.addAttribute("article", article);
-        return "articleShow";
+    public ResponseEntity<Article> getArticle(@PathVariable(value = "id") int id) throws Exception {
+        Article article = articleMapper.getArticleById(id);
+        return ResponseEntity.ok().body(article);
     }
 }

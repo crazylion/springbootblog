@@ -14,9 +14,9 @@
         <button id="search-btn" name="search-btn">搜索</button>
     </form>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a th:href="@{/add}">添加内容</a>
+    <a th:href="@{/articles/new}">添加内容</a>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a th:href="@{/listArticle}">全部重整</a>
+    <a th:href="@{/articles}">全部重整</a>
     <table width="100%" border="1">
 
         <tr align="center">
@@ -27,7 +27,7 @@
             <td colspan="2" width="20%">操作</td>
         </tr>
         <tr align="center" th:each="list: ${pages.list}">
-            <td><a href="javascript:void(0)" th:id="'article_title_' + ${list.id}">[[${list.title}]]</a></td>
+            <td><a th:href="@{/articles/{id}(id = ${list.id})}"th:id="'article_title_' + ${list.id}">[[${list.title}]]</a></td>
             <td th:text="${list.summary}"></td>
             <td th:text="${list.mdContent}"></td>
             <td th:text="${list.state}==1?'發布':'未發布'"></td>
